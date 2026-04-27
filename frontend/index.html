@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SmartFlow</title>
+</head>
+<body>
+  <h1>SmartFlow Frontend</h1>
+  <button onclick="checkHealth()">Check Backend</button>
+  <pre id="result"></pre>
+
+  <script>
+    async function checkHealth() {
+      const res = await fetch("/api/v1/health/");
+      const data = await res.json();
+      document.getElementById("result").textContent = JSON.stringify(data, null, 2);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on: [frontend, backend]
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    env_file: ./backend/.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis:    { condition: service_healthy }
+    restart: unless-stopped
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+  celery_worker:
+    build: ./backend
+    env_file: ./backend/.env
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis:    { condition: service_healthy }
+    restart: unless-stopped
+    command: celery -A app.celery_app.worker worker --loglevel=info --concurrency=4
+    healthcheck:
+      test: ["CMD", "celery", "-A", "app.celery_app.worker", "inspect", "ping"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+
+  celery_beat:
+    build: ./backend
+    env_file: ./backend/.env
+    depends_on: [celery_worker]
+    restart: unless-stopped
+    command: celery -A app.celery_app.worker beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+
+  postgres:
+    image: postgres:16-alpine
+    env_file: ./backend/.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/migrations:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7.2-alpine
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  postgres_data:
+  redis_data:
