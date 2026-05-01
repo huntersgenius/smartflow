@@ -1,9 +1,21 @@
+from typing import Literal
+
 from pydantic import BaseModel
 
 
 class GuestSessionResponse(BaseModel):
     session_id: str
     expires_in: int
+
+
+class StaffLoginResponse(BaseModel):
+    user_id: int
+    role: Literal["kitchen", "admin"]
+    branch_id: int
+
+
+class MessageResponse(BaseModel):
+    message: str
 
 
 class MenuItemResponse(BaseModel):

@@ -1,0 +1,38 @@
+{
+  "name": "smartflow-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json && vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "lint": "tsc -b --pretty false"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.90.11",
+    "blurhash": "^2.0.5",
+    "canvas-confetti": "^1.9.3",
+    "framer-motion": "^12.23.24",
+    "lucide-react": "^0.468.0",
+    "qrcode": "^1.5.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.6.0",
+    "react-router-dom": "^6.30.2",
+    "zustand": "^4.5.7"
+  },
+  "devDependencies": {
+    "@types/canvas-confetti": "^1.9.0",
+    "@types/node": "^20.17.10",
+    "@types/qrcode": "^1.5.5",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.3",
+    "vite": "^5.4.21"
+  }
+}

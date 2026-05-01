@@ -38,7 +38,7 @@ async def create_guest_session_endpoint(
         value=session["token"],
         max_age=GUEST_SESSION_TTL_SECONDS,
         httponly=True,
-        secure=True,
+        secure=False,
         samesite="strict",
     )
 

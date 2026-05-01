@@ -13,7 +13,7 @@ from app.database import close_db_pool, create_db_pool
 from app.middleware.rate_limit import RateLimitMiddleware
 from app.middleware.session import SessionMiddleware
 from app.redis_client import close_redis_pool, create_redis_pool
-from app.routers import health, kitchen, menu, orders, sessions
+from app.routers import admin, auth, health, kitchen, menu, orders, sessions
 
 
 logger = logging.getLogger(__name__)
@@ -109,10 +109,12 @@ def create_app() -> FastAPI:
 
     app.include_router(health.router)
     app.include_router(sessions.router, prefix=settings.API_PREFIX)
+    app.include_router(auth.router, prefix=settings.API_PREFIX)
     app.include_router(menu.router, prefix=settings.API_PREFIX)
     app.include_router(orders.router, prefix=settings.API_PREFIX)
     app.include_router(orders.guest_router, prefix=settings.API_PREFIX)
     app.include_router(kitchen.router, prefix=settings.API_PREFIX)
+    app.include_router(admin.router, prefix=settings.API_PREFIX)
 
     app.add_middleware(RateLimitMiddleware)
     app.add_middleware(SessionMiddleware)

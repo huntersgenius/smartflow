@@ -10,6 +10,13 @@ class GuestSessionRequest(BaseModel):
     table_code: str = Field(min_length=1, max_length=50)
 
 
+class StaffLoginRequest(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+
+    email: str = Field(min_length=1, max_length=255)
+    password: str = Field(min_length=1, max_length=255)
+
+
 class OrderItemRequest(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True)
 

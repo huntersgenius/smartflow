@@ -10,6 +10,31 @@ SET restaurant_id = EXCLUDED.restaurant_id,
     address = EXCLUDED.address,
     active = EXCLUDED.active;
 
+INSERT INTO staff_users (branch_id, email, password_hash, role, full_name, active)
+VALUES
+    (
+        1,
+        'kitchen@smartflow.local',
+        '$2b$12$ASoCK8hdTofzwWK8TKl/QufEluC3nKci/QwH5nIqarxQ.eCpEoCmK',
+        'kitchen',
+        'Demo Kitchen',
+        true
+    ),
+    (
+        1,
+        'admin@smartflow.local',
+        '$2b$12$ASoCK8hdTofzwWK8TKl/QufEluC3nKci/QwH5nIqarxQ.eCpEoCmK',
+        'admin',
+        'Demo Admin',
+        true
+    )
+ON CONFLICT (email) DO UPDATE
+SET branch_id = EXCLUDED.branch_id,
+    password_hash = EXCLUDED.password_hash,
+    role = EXCLUDED.role,
+    full_name = EXCLUDED.full_name,
+    active = EXCLUDED.active;
+
 INSERT INTO dining_tables (id, branch_id, table_code, label, active, qr_image_url)
 VALUES
     (1, 1, 'T-12-B', 'Table 12B', true, 'https://cdn.example.com/qr/T-12-B.png'),

@@ -47,7 +47,7 @@ services:
     env_file: ./backend/.env
     depends_on: [celery_worker]
     restart: unless-stopped
-    command: celery -A app.celery_app.worker beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    command: celery -A app.celery_app.worker beat --loglevel=info
 
   postgres:
     image: postgres:16-alpine

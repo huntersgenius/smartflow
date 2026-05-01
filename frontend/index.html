@@ -1,19 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>SmartFlow</title>
-</head>
-<body>
-  <h1>SmartFlow Frontend</h1>
-  <button onclick="checkHealth()">Check Backend</button>
-  <pre id="result"></pre>
-
-  <script>
-    async function checkHealth() {
-      const res = await fetch("/api/v1/health/");
-      const data = await res.json();
-      document.getElementById("result").textContent = JSON.stringify(data, null, 2);
-    }
-  </script>
-</body>
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#16a34a" />
+    <title>SmartFlow</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
